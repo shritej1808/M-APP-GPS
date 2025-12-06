@@ -123,8 +123,8 @@ class LocationService : Service() {
         lastPostTime = now
 
         try {
-            val acc = if (loc.hasAccuracy()) loc.accuracy.toFloat() else 0f
-            val spd = if (loc.hasSpeed()) loc.speed.toFloat() else 0f
+            val acc = if (loc.hasAccuracy()) loc.accuracy else 0f
+            val spd = if (loc.hasSpeed()) loc.speed else 0f
 
             val json = JSONObject().apply {
                 put("vehicle_id", deviceId)
@@ -136,16 +136,38 @@ class LocationService : Service() {
 
             val body = json.toString().toRequestBody("application/json".toMediaType())
 
-            val req = Request.Builder().url(apiUrl).post(body).build()
+            val req = Request.Builder()
+                .url(apiUrl)
+                .post(body)
+                .build()
 
-            client.newCall(req).execute().use {
-                Log.d("SERVICE", "Sent location → Backend (${loc.latitude}, ${loc.longitude})")
+            client.newCall(req).execute().use { response ->
+
+                val raw = response.body?.string() ?: ""
+
+                // 🚨 Detect ngrok / HTML failure early
+                if (raw.startsWith("<!DOCTYPE") || raw.startsWith("<html")) {
+                    Log.e("SERVICE", "❌ Backend returned HTML instead of JSON → ngrok dead or wrong URL")
+                    return@use
+                }
+
+                // 🚨 Detect server-side error pages (500, 404, etc.)
+                if (!response.isSuccessful) {
+                    Log.e("SERVICE", "❌ Server error: ${response.code} → ${raw.take(100)}")
+                    return@use
+                }
+
+                Log.d(
+                    "SERVICE",
+                    "✔ Sent location → ${loc.latitude}, ${loc.longitude}"
+                )
             }
 
         } catch (e: Exception) {
-            Log.e("SERVICE", "Error sending location: ${e.message}")
+            Log.e("SERVICE", "🔥 Exception while sending location: ${e.message}")
         }
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

@@ -32,7 +32,7 @@ class TripAdapter : RecyclerView.Adapter<TripAdapter.TripViewHolder>(), Filterab
 
     fun addTrip(trip: Trip) {
         originalTrips = originalTrips + trip
-        trips.add(0, trip)  // Add to top for newest first
+        trips.add(0, trip)
         filteredTrips.add(0, trip)
         notifyItemInserted(0)
     }
@@ -46,7 +46,6 @@ class TripAdapter : RecyclerView.Adapter<TripAdapter.TripViewHolder>(), Filterab
         notifyDataSetChanged()
     }
 
-    // New: Filter for search (call from TextWatcher)
     fun filterTrips(query: String) {
         if (query.isEmpty()) {
             filteredTrips = originalTrips.toMutableList()
@@ -61,7 +60,6 @@ class TripAdapter : RecyclerView.Adapter<TripAdapter.TripViewHolder>(), Filterab
         notifyDataSetChanged()
     }
 
-    // New: Get current filtered count for UI
     fun getFilteredCount(): Int = filteredTrips.size
 
     class TripViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -74,12 +72,11 @@ class TripAdapter : RecyclerView.Adapter<TripAdapter.TripViewHolder>(), Filterab
         fun bind(t: Trip) {
             txtDistance.text = "Distance: %.2f mi".format(t.distance)
             txtToll.text = "Toll: ₹%.2f".format(t.toll)
-            txtStart.text = "Start: ${t.startTime ?: "--"}"
-            txtEnd.text = "End: ${t.endTime ?: "--"}"
+            txtStart.text = "Start: ${t.startTime ?: "Not recorded"}"
+            txtEnd.text = "End: ${t.endTime ?: "Not recorded"}"
         }
     }
 
-    // Filterable for built-in search support
     override fun getFilter(): Filter {
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {

@@ -4,40 +4,40 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
-    android:background="#F2F2F7">
+    android:background="#F4F5F7"
+    android:padding="16dp"
+    android:fillViewport="true">
 
     <LinearLayout
         android:orientation="vertical"
-        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- VEHICLE HEADER CARD -->
+        <!-- HEADER CARD -->
         <LinearLayout
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="20dp"
             android:background="@drawable/card_bg"
-            android:elevation="4dp"
-            android:layout_marginBottom="16dp"
+            android:elevation="6dp"
+            android:layout_marginBottom="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/vehicleHeaderText"
                 android:text="Vehicle: --"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#000000"
+                android:textColor="#141414"
+                android:layout_marginBottom="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/historyDateText"
-                android:text="Trip History - All Records"
+                android:text="Trip History"
                 android:textSize="16sp"
-                android:textColor="#666666"
-                android:layout_marginTop="4dp"
+                android:textColor="#6A6A6A"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
         </LinearLayout>
@@ -45,68 +45,64 @@
         <!-- SEARCH BAR -->
         <LinearLayout
             android:orientation="horizontal"
+            android:background="@drawable/search_bg"
             android:padding="12dp"
-            android:background="@drawable/card_bg"
-            android:elevation="2dp"
-            android:layout_marginBottom="12dp"
+            android:elevation="3dp"
+            android:layout_marginBottom="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:src="@android:drawable/ic_menu_search"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="8dp"
+                app:tint="#808080" />
 
             <EditText
                 android:id="@+id/searchEditText"
                 android:layout_width="0dp"
-                android:layout_height="48dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Search trips by date or distance..."
-                android:inputType="text"
+                android:hint="Search by date, toll, distance..."
                 android:background="@null"
-                android:padding="8dp"
-                android:textSize="16sp" />
-
-            <ImageButton
-                android:id="@+id/searchButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@android:drawable/ic_menu_search"
-                android:background="@null"
-                android:contentDescription="Search" />
+                android:textSize="16sp"
+                android:textColor="#000000"/>
         </LinearLayout>
 
-        <!-- TRIP HISTORY CARD -->
+        <!-- TRIP LIST CARD -->
         <LinearLayout
             android:orientation="vertical"
-            android:padding="16dp"
+            android:padding="18dp"
             android:background="@drawable/card_bg"
-            android:elevation="4dp"
-            android:layout_marginBottom="12dp"
+            android:elevation="6dp"
+            android:layout_marginBottom="18dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:text="Full Trip History"
+                android:text="All Trips"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#000000"
+                android:textColor="#141414"
+                android:layout_marginBottom="10dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp" />
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tripCountText"
                 android:text="Loading trips..."
                 android:textSize="14sp"
-                android:textColor="#888888"
+                android:textColor="#7A7A7A"
+                android:layout_marginBottom="14dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+                android:layout_height="wrap_content" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/historyRecycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:nestedScrollingEnabled="false"
-                android:overScrollMode="never"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/trip_item"
                 tools:itemCount="5" />
         </LinearLayout>
@@ -119,28 +115,29 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp">
+            android:paddingTop="50dp"
+            android:paddingBottom="50dp">
 
             <ImageView
                 android:layout_width="120dp"
                 android:layout_height="120dp"
-                android:src="@android:drawable/ic_dialog_info"
-                android:layout_marginBottom="16dp"
-                app:tint="#CCCCCC" />
+                android:src="@drawable/ic_empty"
+                android:layout_marginBottom="18dp"
+                app:tint="#C7C7C7" />
 
             <TextView
-                android:text="No trips found"
-                android:textSize="18sp"
+                android:text="No Trips Found"
+                android:textSize="20sp"
                 android:textStyle="bold"
-                android:textColor="#666666"
+                android:textColor="#5C5C5C"
+                android:layout_marginBottom="6dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp" />
+                android:layout_height="wrap_content" />
 
             <TextView
-                android:text="Start a new trip to see history here."
+                android:text="Start driving to see your trips here."
                 android:textSize="14sp"
-                android:textColor="#999999"
+                android:textColor="#8E8E8E"
                 android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
@@ -151,12 +148,14 @@
             android:id="@+id/btnBack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="← Back to Dashboard"
-            android:padding="12dp"
+            android:text="← Back"
+            android:padding="14dp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:backgroundTint="#6200EE"
+            android:backgroundTint="#4A6CF7"
             android:textColor="#FFFFFF"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="24dp"
+            android:elevation="4dp" />
 
     </LinearLayout>
 

@@ -13,15 +13,6 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
 
-        <!-- ⭐ APP LOGO -->
-        <ImageView
-            android:id="@+id/appLogo"
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:src="@drawable/file"
-            android:scaleType="fitCenter"
-            android:adjustViewBounds="true"
-            android:layout_marginBottom="20dp" />
 
         <!-- VEHICLE CARD -->
         <LinearLayout

@@ -6,3 +6,4 @@ data class Trip(
     val startTime: String?,
     val endTime: String?
 )
+
