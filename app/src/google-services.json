@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1059772165216",
+    "project_id": "gps-tracking-system-86cc0",
+    "storage_bucket": "gps-tracking-system-86cc0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1059772165216:android:8e0f01596b06ac7b9be705",
+        "android_client_info": {
+          "package_name": "com.example.gpsapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBW9fd0Cv0ZETyE3HwyRLxSU05XvpHE4-U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
