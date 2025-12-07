@@ -2,50 +2,86 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     android:background="@drawable/card_bg"
-    android:layout_marginBottom="12dp">
+    android:layout_marginBottom="12dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/txtDistance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="Distance"
-        android:textSize="17sp"
+        android:textSize="16sp"
         android:textStyle="bold"
-        android:textColor="#1A1A1A"
-        android:paddingBottom="4dp" />
+        android:textColor="#111827"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/txtToll"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:text="Toll"
+        android:textColor="#2563EB"
         android:textSize="15sp"
-        android:textColor="#333333"
-        android:paddingBottom="6dp" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#D9D9D9"
-        android:layout_marginBottom="8dp"/>
+        android:paddingTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/txtStart"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Start time"
-        android:textSize="14sp"
-        android:textColor="#555555"
-        android:paddingBottom="4dp"/>
+        android:text="Start"
+        android:textColor="#6B7280"
+        android:paddingTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <TextView
         android:id="@+id/txtEnd"
+        android:text="End"
+        android:textColor="#6B7280"
+        android:paddingTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- ENTRY/EXIT TOLL GATES -->
+    <TextView
+        android:id="@+id/txtEntryToll"
+        android:text="Entry Toll: --"
+        android:textColor="#6B7280"
+        android:paddingTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/txtExitToll"
+        android:text="Exit Toll: --"
+        android:textColor="#6B7280"
+        android:paddingTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!-- PAY BUTTON -->
+    <Button
+        android:id="@+id/btnPay"
+        android:text="Pay Now"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#2563EB"
+        android:padding="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="End time"
+        android:layout_marginTop="12dp"/>
+
+    <!-- PAID BADGE -->
+    <TextView
+        android:id="@+id/paidBadge"
+        android:text="PAID ✔"
         android:textSize="14sp"
-        android:textColor="#555555" />
+        android:textStyle="bold"
+        android:textColor="#0A7A24"
+        android:padding="6dp"
+        android:background="@drawable/paid_badge_bg"
+        android:layout_marginTop="8dp"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 </LinearLayout>

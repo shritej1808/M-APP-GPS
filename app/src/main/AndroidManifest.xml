@@ -28,6 +28,7 @@
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.GPSAPP">
 
+
         <!-- 🔥 FCM SERVICE -->
         <service
             android:name=".MyFirebaseService"
@@ -49,6 +50,7 @@
         <activity
             android:name=".TripHistoryActivity"
             android:exported="false" />
+        <activity android:name=".PaymentActivity" />
 
         <!-- 🔥 LOCATION FOREGROUND SERVICE -->
         <service

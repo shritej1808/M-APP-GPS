@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.preference.PreferenceManager
 import com.google.android.gms.location.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -25,7 +26,9 @@ class LocationService : Service() {
     private lateinit var fused: FusedLocationProviderClient
     private val client = OkHttpClient()
 
-    private val deviceId = "UP70GT1215"
+    // ❗Vehicle ID no longer hard-coded
+    private var deviceId: String = ""
+
     private val apiUrl = BuildConfig.API_BASE + "/update_location"
 
     private var lastPostTime = 0L
@@ -34,7 +37,9 @@ class LocationService : Service() {
     override fun onCreate() {
         super.onCreate()
 
-        Log.d("SERVICE", "LocationService created")
+        loadVehicleId()   // Load real saved vehicle ID
+
+        Log.d("SERVICE", "LocationService created. Using vehicle = $deviceId")
 
         startForegroundServiceSafe()
         startLocationUpdates()
@@ -47,13 +52,24 @@ class LocationService : Service() {
     override fun onBind(intent: Intent?): IBinder? = null
 
     // ---------------------------------------------------------------------
-    //  FOREGROUND SERVICE SETUP
+    //  LOAD VEHICLE ID FROM SHARED PREFS
+    // ---------------------------------------------------------------------
+    private fun loadVehicleId() {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
+        deviceId = prefs.getString("vehicle_id", "") ?: ""
+
+        if (deviceId.isBlank()) {
+            Log.e("SERVICE", "❌ vehicle_id NOT SET in SharedPreferences!")
+        }
+    }
+
+    // ---------------------------------------------------------------------
+    //  FOREGROUND SERVICE
     // ---------------------------------------------------------------------
     private fun startForegroundServiceSafe() {
 
         val channelId = "gps_channel"
 
-        // Create notification channel for Android 8+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
@@ -66,7 +82,7 @@ class LocationService : Service() {
 
         val notification = NotificationCompat.Builder(this, channelId)
             .setContentTitle("GPS Tracking Active")
-            .setContentText("Sending live location to server…")
+            .setContentText("Sending live location for $deviceId…")
             .setSmallIcon(android.R.drawable.ic_menu_mylocation)
             .setOngoing(true)
             .build()
@@ -83,7 +99,7 @@ class LocationService : Service() {
     }
 
     // ---------------------------------------------------------------------
-    //  START GPS UPDATES
+    //  GPS UPDATES
     // ---------------------------------------------------------------------
     private fun startLocationUpdates() {
 
@@ -114,9 +130,14 @@ class LocationService : Service() {
     }
 
     // ---------------------------------------------------------------------
-    //  SEND LOCATION TO BACKEND
+    //  SEND TO BACKEND
     // ---------------------------------------------------------------------
     private fun handleLocation(loc: Location) {
+
+        if (deviceId.isBlank()) {
+            Log.e("SERVICE", "❌ Cannot send location → vehicleId empty")
+            return
+        }
 
         val now = System.currentTimeMillis()
         if (now - lastPostTime < POST_INTERVAL_MS) return
@@ -145,33 +166,27 @@ class LocationService : Service() {
 
                 val raw = response.body?.string() ?: ""
 
-                // 🚨 Detect ngrok / HTML failure early
-                if (raw.startsWith("<!DOCTYPE") || raw.startsWith("<html")) {
-                    Log.e("SERVICE", "❌ Backend returned HTML instead of JSON → ngrok dead or wrong URL")
+                if (raw.startsWith("<html")) {
+                    Log.e("SERVICE", "❌ Backend returned HTML → ngrok dead?")
                     return@use
                 }
 
-                // 🚨 Detect server-side error pages (500, 404, etc.)
                 if (!response.isSuccessful) {
-                    Log.e("SERVICE", "❌ Server error: ${response.code} → ${raw.take(100)}")
+                    Log.e("SERVICE", "❌ Server error: ${response.code}")
                     return@use
                 }
 
-                Log.d(
-                    "SERVICE",
-                    "✔ Sent location → ${loc.latitude}, ${loc.longitude}"
-                )
+                Log.d("SERVICE", "✔ Sent location for $deviceId @ ${loc.latitude}, ${loc.longitude}")
             }
 
         } catch (e: Exception) {
-            Log.e("SERVICE", "🔥 Exception while sending location: ${e.message}")
+            Log.e("SERVICE", "🔥 Error sending location: ${e.message}")
         }
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
-        fused.removeLocationUpdates(object : LocationCallback() {})  // Clean up
+        fused.removeLocationUpdates(object : LocationCallback() {})
         Log.d("SERVICE", "LocationService destroyed")
     }
 }

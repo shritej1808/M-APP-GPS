@@ -45,7 +45,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var fused: FusedLocationProviderClient
     private val client = OkHttpClient()
 
-    private val deviceId = "UP70GT1215"
+    // ---- FIXED: Now vehicle ID comes from SharedPreferences ----
+    private val deviceId: String by lazy {
+        getSharedPreferences("gpsapp", MODE_PRIVATE)
+            .getString("vehicle_id", "UNKNOWN")!!
+    }
+
     private val apiUrl = BuildConfig.API_BASE + "/update_location"
     private var trackingEnabled = false
 
@@ -71,6 +76,7 @@ class MainActivity : AppCompatActivity() {
 
         initUI()
 
+        // History button sends correct vehicle ID
         btnHistory.setOnClickListener {
             val i = Intent(this, TripHistoryActivity::class.java)
             i.putExtra("vehicle_id", deviceId)
@@ -114,7 +120,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // -------------------------------------------------------
-    // START BACKGROUND TRACKING (Foreground service)
+    // START BACKGROUND TRACKING
     // -------------------------------------------------------
     private fun startTrackingForeground() {
         trackingEnabled = true
@@ -122,7 +128,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // -------------------------------------------------------
-    // FOREGROUND LOCATION UPDATES (for UI/map)
+    // LOCATION UPDATE
     // -------------------------------------------------------
     private fun startLocalLocationUpdates() {
         fused = LocationServices.getFusedLocationProviderClient(this)
@@ -144,9 +150,6 @@ class MainActivity : AppCompatActivity() {
         }, mainLooper)
     }
 
-    // -------------------------------------------------------
-    // HANDLE LOCATION
-    // -------------------------------------------------------
     private fun handleLocation(loc: Location) {
 
         if (!loc.hasAccuracy() || loc.accuracy > ACCURACY_THRESHOLD) {
@@ -161,10 +164,9 @@ class MainActivity : AppCompatActivity() {
     }
 
     // -------------------------------------------------------
-    // UPDATE MAP VIEW
+    // MAP DISPLAY
     // -------------------------------------------------------
     private fun updateMap(loc: Location) {
-
         val isNight = Calendar.getInstance().get(Calendar.HOUR_OF_DAY) !in 6..18
         val style = if (isNight) "dark-matter-yellow-roads" else "osm-bright-smooth"
 
@@ -201,7 +203,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // -------------------------------------------------------
-    // BACKEND SEND
+    // SEND TO BACKEND
     // -------------------------------------------------------
     private fun sendToBackendThrottled(loc: Location) {
         val now = System.currentTimeMillis()
@@ -281,10 +283,5 @@ class MainActivity : AppCompatActivity() {
                 Log.e("RESET", "Error: ${e.localizedMessage}")
             }
         }
-    }
-
-    private fun getCurrentTime(): String {
-        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
-        return sdf.format(Date())
     }
 }

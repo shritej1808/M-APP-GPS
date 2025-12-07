@@ -23,8 +23,8 @@ android {
 
         buildConfigField("String", "GEOAPIFY_KEY", "\"b5507f6e431b4cd3bdc10d5406b6ad93\"")
         buildConfigField("String", "API_BASE", "\"https://nena-unhaggling-pierce.ngrok-free.dev\"")
-
-
+        buildConfigField("String", "RAZORPAY_KEY_ID", "\"rzp_test_RoIFjBw2KFvSQF\"")
+        
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -76,4 +76,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.razorpay:checkout:1.6.41")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+
+    implementation("androidx.preference:preference-ktx:1.2.1")
+
+
 }
