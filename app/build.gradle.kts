@@ -22,7 +22,7 @@ android {
         versionName = "1.0"
 
         buildConfigField("String", "GEOAPIFY_KEY", "\"b5507f6e431b4cd3bdc10d5406b6ad93\"")
-        buildConfigField("String", "API_BASE", "\"https://nena-unhaggling-pierce.ngrok-free.dev\"")
+        buildConfigField("String", "API_BASE", "\"https://unspruced-marlin-unlively.ngrok-free.dev\"")
         buildConfigField("String", "RAZORPAY_KEY_ID", "\"rzp_test_RoIFjBw2KFvSQF\"")
         
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

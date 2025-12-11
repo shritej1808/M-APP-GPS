@@ -1,7 +1,9 @@
 package com.example.gpsapp
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.google.firebase.database.*
 
 object FirebaseCommandListener {
@@ -16,6 +18,7 @@ object FirebaseCommandListener {
             .child("start")
 
         db.addValueEventListener(object : ValueEventListener {
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onDataChange(snapshot: DataSnapshot) {
                 val start = snapshot.getValue(Boolean::class.java) ?: false
 

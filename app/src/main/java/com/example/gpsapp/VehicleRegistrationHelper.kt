@@ -1,5 +1,6 @@
 package com.example.gpsapp
 
+import android.content.Context
 import android.util.Log
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -10,8 +11,14 @@ object VehicleRegistrationHelper {
 
     private val client = OkHttpClient()
 
-    fun saveTokenToBackend(token: String) {
-        val vehicleId = "UP70GT1215" // hard-coded for now (ok for demo)
+    fun saveTokenToBackend(context: Context, token: String) {
+        val prefs = context.getSharedPreferences("gps_prefs", Context.MODE_PRIVATE)
+        val vehicleId = prefs.getString("vehicle_id", null)
+
+        if (vehicleId.isNullOrEmpty()) {
+            Log.e("FCM_REG", "❌ Cannot send token: No vehicle_id saved")
+            return
+        }
 
         val json = """
             {
@@ -21,7 +28,6 @@ object VehicleRegistrationHelper {
         """.trimIndent()
 
         val body = json.toRequestBody("application/json".toMediaType())
-
         val req = Request.Builder()
             .url(BuildConfig.API_BASE + "/register_device")
             .post(body)
@@ -29,11 +35,15 @@ object VehicleRegistrationHelper {
 
         client.newCall(req).enqueue(object : Callback {
             override fun onFailure(call: Call, e: IOException) {
-                Log.e("FCM_REG", "Failed: " + e.message)
+                Log.e("FCM_REG", "Failed to send token: ${e.message}")
             }
 
             override fun onResponse(call: Call, response: Response) {
-                Log.d("FCM_REG", "Saved token to backend")
+                if (!response.isSuccessful) {
+                    Log.e("FCM_REG", "Failed: ${response.code}")
+                    return
+                }
+                Log.d("FCM_REG", "✔ Token saved for $vehicleId")
             }
         })
     }
