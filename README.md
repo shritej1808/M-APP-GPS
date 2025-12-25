@@ -86,12 +86,6 @@ The app will request these at runtime:
 
 ---
 
-## 📱 Screenshots (Optional)
-
-| Main Map View | Location Details |
-| --- | --- |
-|  |  |
-
 ---
 
 ## 🤝 Contributing
