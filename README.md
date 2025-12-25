@@ -1,8 +1,3 @@
-Below is a professionally structured, comprehensive `README.md` file. It is formatted using standard Markdown syntax, ready for you to copy and paste directly into your GitHub repository.
-
----
-
-### 📄 **Copy & Paste the code below:**
 
 ```markdown
 # M-APP-GPS 📍
