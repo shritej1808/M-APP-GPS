@@ -31,19 +31,6 @@ The app is built using industry-standard tools for Android development:
 
 ---
 
-## 📂 Project Structure
-
-```text
-M-APP-GPS/
-├── app/
-│   ├── src/
-│   │   ├── main/
-│   │   │   ├── java/com/shritej1808/mappgps/  # Logic & Location Listeners
-│   │   │   ├── res/layout/                    # UI Layout files
-│   │   │   └── AndroidManifest.xml            # Permissions & API config
-│   └── build.gradle                           # Dependencies & SDK versions
-└── README.md
-
 ```
 
 ---
